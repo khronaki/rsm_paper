@@ -1,0 +1,109 @@
+\begin{table*}[t]
+\begin{center}
+\caption{Evaluated benchmarks and relevant characteristics}
+\label{tab.apps}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multirow{3}{*}{\parbox{13mm}{\centering Application}} & 
+\multirow{3}{*}{Problem size} & 
+\multirow{3}{*}{\parbox{10mm}{\centering \#Tasks}} & 
+\multirow{3}{*}{\parbox{17mm}{\centering Avg task CPU cycles (thousands)}} & 
+\multicolumn{3}{|c|}{\parbox{22mm}{\centering Per task overheads (CPU cycles)}} & & &\\
+\cline{5-7}
+& & & & \multirow{2}{*}{\parbox{10mm}{\centering Create}} & \multirow{2}{*}{\parbox{9mm}{\centering All}} & \multirow{2}{*}{\parbox{11mm}{\centering Deps + Sched}} & \multirow{2}{*}{\parbox{15mm}{\centering Measured perf. ratio}} &
+{\parbox{10mm}{\centering $r$}} &
+\multirow{2}{*}{\parbox{11mm}{\centering Parallel model}} \\
+& & & & & & & & & \\ %\hhline{~~~~~~}
+\hline
+
+\multirow{2}{*}{\parbox{18mm}{\centering Cholesky factorization}} & 
+32K 256 & 357\,762  & 753 & 15221 &  73286 &  58065 &  \multirow{2}{*}{\parbox{9mm}{\centering 3.5}} & 10.34 & \multirow{2}{*}{\parbox{17mm}{\centering dependencies}}\\                                              & 32K 128 & 2829058 & 110 & 17992 &  58820 &  40828 & & 83.74 &\\
+%& 32$\times$32 blocks of 512$\times$512 floats & 5984 & & 1\,551\,322 & 104.76 &  238.02 &  194.28  & \\ 
+\hline{}
+\multirow{2}{*}{\parbox{18mm}{\centering QR factorization}} & 16K 512 & 11\,442 & 518\,570  & 17595 & 63008 &   45413 & \multirow{2}{*}{\parbox{9mm}{\centering 6.8}} & 0.01 &\multirow{2}{*}{\parbox{17mm}{\centering dependencies}}\\
+&  16K 128 & 707\,265 & 3\,558 & 21642 & 60777 & 39135 & & 3.11 &\\
+\hline
+Blackscholes & native & 488\,202 & 348  &   29141  &  85438 &  56297 & 2.3 & 42.87 & data-parallel \\
+\hline
+Bodytrack & native & 329\,123 & 383 &  9\,505 &  18979 & 9474 & 4.2 & 12.70 & pipeline \\ 
+%Heat diffusion & Heat &  &  &  &  &  & \\ 
+\hline
+Canneal & native & 3\,072\,002 & 67 & 25781 & 50094 &  24313 & 2.0 & 197.01 & unstructured \\
+\hline
+Dedup & native & 20\,248 & 1\,532 & 1294 & 9647 &  8353 & 2.7 & 0.43 & pipeline \\
+\hline 
+Ferret & native$\times$2 & 84\,002 & 29\,088 & 38913 & 98457 &  59544 & 3.6 & 0.68 & pipeline \\
+\hline
+Fluidanimate & native & 128\,502 & 16\,734 & 30210 & 94079 &  64079 & 3.3 & 0.91 & data-parallel \\
+\hline
+Streamcluster & native & 3\,184\,654 & 161 & 6892 & 13693 &  6801 & 3.5 & 21.91 & data-parallel \\
+\hline
+\end{tabular}}
+\end{center}
+\vspace{-0.4cm}
+\end{table*}
+
+\subsection{Applications}
+%\begin{itemize}
+%\item Blackscholes
+%\item Cholesky
+%\item Canneal
+%\item Fluidanimate
+%\item QR Factorization
+%\item Bodytrack
+%\item Streamcluster
+%\end{itemize}
+Table~\ref{tab.apps} shows the evaluated applications, the input sizes used, and their characteristics. 
+All applications are implemented using the OpenMP programming model~\cite{OpenMP4.0:Manual2015}. 
+We obtain Cholesky and QR from the BAR repository~\cite{BAR} and we use the implementations of the rest of the benchmarks from the PARSECSs suite~\cite{Chasapis:TACO2016}.
+More information about these applications can be found in~\cite{Chasapis:TACO2016} and~\cite{Chronaki:ICS2015}.
+As the number of cores in SoCs is increasing, so does the need of available task parallelism~\cite{Sanchez:2010}. 
+We choose the input sizes of the applications so that they create enough fine-grained tasks to feed up to 512 cores.
+The number of tasks per application and input as well as the average per-task CPU cycles can be found on Table~\ref{tab.apps}.
+
+
+
+
+
+\subsection{Simulation}
+\label{sec:experimental:simulation}
+To evaluate {\proposal} we make use of the TaskSim simulator~\cite{AbstrLevels_TACO12,MUSA}. 
+TaskSim is a trace driven simulator, that supports the specification of homogeneous or heterogeneous systems with many cores. 
+The tracing overhead of the simulator is less than 10\% and the simulation is accurate as long as there is no contention in the shared memory resources on a real system~\cite{MUSA}.
+By default, TaskSim allows the specification of the amount of cores and supports up to two core types in the case of heterogeneous asymmetric systems. 
+This is done by specifying the number of cores of each type and their difference in performance between the different types (performance ratio) in the TaskSim configuration file.
+
+Our evaluation consists of experiments on both symmetric and asymmetric platforms with the number of cores varying from 8 to 512.
+In the case of asymmetric systems, we simulate the behaviour of an ARM big.LITTLE architecture~\cite{ARM}.
+To set the correct performance ratio between big and little cores, we measure the sequential execution time of each application on a real ARM big.LITTLE platform when running on a little and on a big core. 
+We use the Hardkernel Odroid~XU3 board that includes a Samsung Exynos 5422 chip with ARM big.LITTLE.
+The big cores run at 1.6GHz and the little cores at 800MHz.
+%We compare its performance when they run on a little and on a big core.
+Table~\ref{tab.apps} shows the measured performance ratio for each case.
+The average performance ratio among our 11 workloads is 3.8.
+Thus in the specification of the asymmetric systems we use as performance ratio the value 4.
+
+To simulate our approaches using TaskSim we first run each application/input in the TaskSim trace generation mode.
+This mode enables the online tracking of task duration and synchronization overheads and stores them in a trace file. 
+To perform the simulation, TaskSim uses the information stored in the trace file and executes the application by providing this information to the runtime system.
+For our experiments we generate three trace files for each application/input combination on a Genuine Intel 16-core machine running at 2.60GHz.
+
+We modify TaskSim so that it features one extra hardware accelerator (per multi-core) responsible for the fast task creation (the RTopt).
+Apart from the task duration time, our modified simulator tracks the duration of the runtime overheads.
+These overheads include: (a) task creation, (b) dependencies resolution, and (c) scheduling.
+The RTopt core is optimized to execute task creation faster than the general purpose cores; 
+to determine how much faster a task creation job is executed we use the analysis performed in Section~\ref{sec:hw_req}.
+
+Using Equation~\ref{eq.create}, we compute the $C_{opt}(x)$ for each application according to their average task CPU cycles from Table~\ref{tab.apps} for $x=512$ cores.
+$C_{gp}$ is the cost of task creation when it is performed on a general purpose core, namely the \textit{Create} column shown on Table~\ref{tab.apps}.
+To have optimal results for each application on systems up to 512 cores, $C_{gp}$ needs to be reduced to $C_{opt}(512)$.
+Thus the specialized hardware accelerator needs to perform task creation with a ratio $r = C_{gp}/C_{opt}(512) \times$ faster than a general purpose core.
+
+We compute $r$ for each application shown on Table~\ref{tab.apps}. We observe that for the applications with a large number of per-task CPU cycles and relatively small \textit{Create} cycles (QR512, Dedup, Ferret, Fluidanimate), $r$ is very close to zero, meaning that the task creation cost ($C_{gp}$) is already small enough for optimal task creation without the need of a faster hardware accelerator.
+For the rest of the applications, more powerful hardware is needed.
+For these applications $r$ ranges from 3$\times$ to 197$\times$.
+Comparing $r$ to the measured performance ratio of each application we can see that in most cases accelerating the task creation on a big core would not be sufficient for achieving higher task creation rate.
+In our experimental evaluation we accelerate task creation in the RTopt and we use the ratio of 16$\times$ which is a relatively small value within this range that we consider realistic to implement in hardware.
+%Contrarily, if RTopt is assigned a task to execute, we assume that it executes it 4$\times$ slower than a general purpose in-order core.
+The results obtained show the average results among three different traces for each application-input.

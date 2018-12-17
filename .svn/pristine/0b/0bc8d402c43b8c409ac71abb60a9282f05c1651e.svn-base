@@ -1,0 +1,8 @@
+This paper presented the first runtime system that decouples task creation and accelerates it on a special hardware.
+From our study we obtain interesting conclusions such as:
+\begin{itemize}
+\item The bigger the tasks the less important the task creation overheads
+\item RAM makes current programming models more portable when running on asymmetric systems as the programmer does not have to worry for the type of core that launches the application
+\item Accelerating task creation is actually the most critical point to achieve high performance in many core systems as from other approaches we saw that they do not scale so well compared to RAM
+\item Current task-based programming models suffer from task creation
+\end{itemize}

@@ -1,0 +1,28 @@
+This paper presented {\proposal}, the first task-based runtime system that decouples task creation and accelerates it on a special hardware.
+In contrast with previous works, our paper makes a very important observation, that is the criticality of accelerating task creation.
+With this simple but important information we implemented {\proposal} on top of the OmpSs programming model.
+
+Task creation overheads are notable especially in workloads with fine grained parallelism.
+The more we increase the granularity and the number of cores, the more critical the task creation becomes.
+By accelerating task creation, {\proposal} achieves up to 6$\times$ average improvement over the baseline for homogeneous systems and up to 7$\times$ on asymmetric systems when the application is launched on a little core.
+
+Using {\proposal} on asymmetric systems is a more portable solution for the programmer, as the task creation is not affected by the type of core that the master thread is bound to.
+We expect that combining {\proposal} with an asymmetry-aware task scheduling policy will achieve even better results, as asymmetry introduces load imbalance in task-based programming models.
+
+Our study includes important information about the requirements of the hardware for accelerating task creation in order to completely eliminate this bottleneck.
+We saw that for some cases like Canneal, task creation needs to be accelerated 197$\times$ in order to constantly have enough created tasks to execute.
+However, even by using a realistic and implementable hardware approach that offers 16$\times$ speedup, achieves satisfactory results as it improves the baseline up to 14$\times$.
+
+Finally, comparing {\proposal} with other approaches such as Carbon, Nexus, Picos++ or TaskSuperscalar that manage to transfer other parts of the runtime to the external hardware proves that {\proposal} is the most minimalistic and effective approach.
+Even if {\proposal} transfers the least possible runtime activity to the specialized hardware it achieves better results.
+This implies that {\proposal} requires a much simpler hardware accelerator, as it will be specialized for only one part of the runtime, unlike the other approaches that need specialization for task creation, dependency tracking and scheduling.
+
+
+
+%From our study we obtain interesting conclusions such as:
+%\begin{itemize}
+%\item The bigger the tasks the less important the task creation overheads
+%\item {\proposal} makes current programming models more portable when running on asymmetric systems as the programmer does not have to worry for the type of core that launches the application
+%\item Accelerating task creation is actually the most critical point to achieve high performance in many core systems as from other approaches we saw that they do not scale so well compared to {\proposal}
+%\item Current task-based programming models suffer from task creation
+%\end{itemize}

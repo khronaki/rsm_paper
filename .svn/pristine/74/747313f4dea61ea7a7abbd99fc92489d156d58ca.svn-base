@@ -1,0 +1,20 @@
+
+\subsection{Simulator}
+To evaluate our runtime system we make use of the TaskSim simulator~\cite{AbstrLevels_TACO12}. 
+TaskSim allows the specification of a homogeneous or heterogeneous systems with many cores. 
+We can configure the amount of cores of each type and the difference in performance between the different types (performance ratio) in the TaskSim configuration file.
+In our experiments, 
+
+we evaluate the effectiveness of CATS on a total of 80 distinct heterogeneous machine configurations. These comprise systems with the total number of cores ranging from 16 to 128, and the number of fast cores ranging from 1 to 16. For all these configurations, we evaluate the following performance ratios between fast and slow cores: 2$\times$, 2.5$\times$, 3$\times$, 3.5$\times$ and 4$\times$.
+
+\subsection{Applications}
+\begin{itemize}
+\item Blackscholes
+\item Cholesky
+\item Canneal
+\item Fluidanimate
+\item QR Factorization
+\item Bodytrack
+
+
+\end{itemize}

@@ -1,0 +1,125 @@
+\subsection{Applications}
+%\begin{table*}
+%\begin{center}
+%\caption{Evaluated benchmarks and relevant characteristics}
+%\label{tab.apps}
+%\begin{tabular}{|c|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{\parbox{22mm}{\centering Application}} & 
+%\multirow{2}{*}{Problem size} & 
+%\multirow{2}{*}{\parbox{11mm}{\centering \#Tasks}} & 
+%%\multirow{2}{*}{\parbox{9mm}{\centering \#Task types}} & 
+%\multirow{2}{*}{\parbox{18mm}{\centering Avg task CPU cycles (thousands)}} & 
+%\multicolumn{3}{|c|}{Per task overheads (CPU cycles)} &\\
+%\cline{5-7}
+%& & & & {\parbox{10mm}{\centering CREATE}} & {\parbox{10mm}{\centering RUNTIME}} & {\parbox{10mm}{\centering DELETE}} &
+%
+%\multirow{2}{*}{\parbox{13mm}{\centering Parallel model}} \\
+%& & & & & & & \\ %\hhline{~~~~~~}
+%\hline
+%
+%\multirow{2}{*}{\parbox{25mm}{\centering Cholesky factorization}} & 
+%128$\times$128 blocks of 256$\times$256 floats & 357\,762  & 753 & 15221 &  50903 &  7162 &  \\                                              & 256$\times$256 blocks of 128$\times$128 floats & 2829058 & 110 & 17992 &  33060 &  7768 & {\parbox{25mm}{\centering Dependencies }} \\
+%%& 32$\times$32 blocks of 512$\times$512 floats & 5984 & & 1\,551\,322 & 104.76 &  238.02 &  194.28  & \\ 
+%\hline{}
+%\multirow{2}{*}{\parbox{25mm}{\centering QR factorization}} & 16$\times$16 blocks of 512$\times$512 doubles & 11\,442 & 518\,570  & 17595 & 39480 &   5933 & Dependencies \\
+%&  128$\times$128 blocks of 128$\times$128 doubles & 707\,265 & 3\,558 & 21642 & 31796 & 7339 & \\
+%\hline
+%Blackscholes & native & 488\,202 & 348  &   29141  &  39520 &  16777 & Data parallel \\
+%\hline
+%Bodytrack & native (851MB) & 329\,123 & 383 &  9\,505 &  3\,907 & 5\,567 & Pipeline \\ 
+%%Heat diffusion & Heat &  &  &  &  &  & \\ 
+%\hline
+%Canneal & native & 3\,072\,002 & 67 & 25781 & 16623 &  7690 & Data parallel \\
+%\hline
+%Dedup & native & 20\,248 & 1\,532 & 1294 & 7479 &  1874 & Pipeline \\
+%\hline 
+%Ferret & native & 84\,002 & 29\,088 & 38913 & 51668 &  7876 & Pipeline \\
+%\hline
+%Fluidanimate & native & 128\,502 & 16\,734 & 30210 & 54397 &  9682 & Pipeline\kc{??} \\
+%\hline
+%Streamcluster & native & 3\,184\,654 & 161 & 6892\kc{approx} & 5391 &  1410 & Data parallel \\
+%\hline
+%\end{tabular}
+%\end{center}
+%\vspace{-0.4cm}
+%\end{table*}
+
+
+\begin{table*}
+\begin{center}
+\caption{Evaluated benchmarks and relevant characteristics}
+\label{tab.apps}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\multirow{2}{*}{\parbox{22mm}{\centering Application}} & 
+\multirow{2}{*}{Problem size} & 
+\multirow{2}{*}{\parbox{11mm}{\centering \#Tasks}} & 
+%\multirow{2}{*}{\parbox{9mm}{\centering \#Task types}} & 
+\multirow{2}{*}{\parbox{18mm}{\centering Avg task CPU cycles (thousands)}} & 
+\multicolumn{3}{|c|}{Per task overheads (CPU cycles)} &\\
+\cline{5-7}
+& & & & {\parbox{10mm}{\centering CREATE}} & {\parbox{10mm}{\centering SCHED}} & {\parbox{10mm}{\centering DEPS + SCHED}} &
+
+\multirow{2}{*}{\parbox{13mm}{\centering Parallel model}} \\
+& & & & & & & \\ %\hhline{~~~~~~}
+\hline
+
+\multirow{2}{*}{\parbox{25mm}{\centering Cholesky factorization}} & 
+128$\times$128 blocks of 256$\times$256 floats & 357\,762  & 753 & 15221 &  73286 &  58065 &  \\                                              & 256$\times$256 blocks of 128$\times$128 floats & 2829058 & 110 & 17992 &  58820 &  40828 & {\parbox{25mm}{\centering Dependencies }} \\
+%& 32$\times$32 blocks of 512$\times$512 floats & 5984 & & 1\,551\,322 & 104.76 &  238.02 &  194.28  & \\ 
+\hline{}
+\multirow{2}{*}{\parbox{25mm}{\centering QR factorization}} & 16$\times$16 blocks of 512$\times$512 doubles & 11\,442 & 518\,570  & 17595 & 63008 &   45413 & Dependencies \\
+&  128$\times$128 blocks of 128$\times$128 doubles & 707\,265 & 3\,558 & 21642 & 60777 & 39135 & \\
+\hline
+Blackscholes & native & 488\,202 & 348  &   29141  &  85438 &  56297 & Data parallel \\
+\hline
+Bodytrack & native (851MB) & 329\,123 & 383 &  9\,505 &  18979 & 9474 & Pipeline \\ 
+%Heat diffusion & Heat &  &  &  &  &  & \\ 
+\hline
+Canneal & native & 3\,072\,002 & 67 & 25781 & 50094 &  24313 & Data parallel \\
+\hline
+Dedup & native & 20\,248 & 1\,532 & 1294 & 9647 &  8353 & Pipeline \\
+\hline 
+Ferret & native & 84\,002 & 29\,088 & 38913 & 98457 &  59544 & Pipeline \\
+\hline
+Fluidanimate & native & 128\,502 & 16\,734 & 30210 & 94079 &  64079 & Pipeline\kc{??} \\
+\hline
+Streamcluster & native \kc{approx} & 3\,184\,654 & 161 & 6892 & 13693 &  6801 & Data parallel \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-0.4cm}
+\end{table*}
+
+\begin{itemize}
+\item Blackscholes
+\item Cholesky
+\item Canneal
+\item Fluidanimate
+\item QR Factorization
+\item Bodytrack
+\item Streamcluster
+
+\end{itemize}
+
+\subsection{Simulator}
+To evaluate our runtime system we make use of the TaskSim simulator~\cite{AbstrLevels_TACO12}. 
+TaskSim is a trace driven simulator, that supports the specification of homogeneous or heterogeneous systems with many cores. 
+It allows us to configure the amount of cores of each type and the difference in performance between the different types (performance ratio) in the TaskSim configuration file.
+
+Our evaluation consists of experiments on both symmetric and asymmetric platforms with the number of cores varying from 8 to 512.
+These simulated platforms feature one extra hardware accelerator (per multi-core) for the task creation.
+We modify TaskSim so that it treats this hardware separately than the rest of the general purpose cores. 
+
+%If the runtime chooses to assign a user-level task to this accelerator, this task is executed 4$\times$ slower than on a general purpose core.
+
+Moreover, apart from the task execution time, our modified simulator tracks the execution time of the runtime overheads.
+These overheads include: (a) task creation, (b) dependencies resolution, (c) task deletion.
+As described in Section~\ref{sec.background} these overheads correspond to the changes of the task state.
+When this accelerator executes a task creation job, it finishes it 16$\times$ faster than a general purpose core.
+Having this information available, the simulator automatically adds up the appropriate amount of CPU cycles according to the frequency of the executing core or special purpose accelerator. 
+
+Table~\ref{tab.apps} shows the evaluated applications, the input sizes used, and their characteristics. 
+The average task CPU cycles and the per task overheads are the outcomes of our trace-driven simulations. 
+We refer to this table in the next section in order to explain the results.

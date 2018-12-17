@@ -1,0 +1,29 @@
+\subsection{Hardware Requirements}
+\label{sec:hw_req}
+Our work makes the assumption of a specialized hardware.
+To evaluate our approach we study the requirements of this accelerator in order to make sense of our runtime.
+Based on the analysis done in the work of Etsion et.al~\cite{TaskSS} there has to be a certain \textit{task decode rate} so that there is optimal utilization of a multi-core system.
+This rule can be applied in the case of {\proposal} for the \textit{task creation rate}, i.e the frequency with which the runtime system generates tasks.
+%This complies with the desired \textit{task creation rate} that matters in our case.
+If the \textit{task creation rate} is higher than the \textit{task execution rate} then for a highly parallel application the resources will always have tasks to execute and they will not starve.
+To maintain the \textit{task creation rate} high enough we can accelerate the task creation cost.
+Equation~\ref{eq.create} shows the maximum optimal task creation cost, $C_{opt}(x)$ in order to keep $x$ cores busy, without starving due to task creation.
+
+\begingroup\makeatletter\def\f@size{9}\check@mathfonts
+\begin{equation}
+  \text{$C_{opt}(x) = avg. task size / x$ }
+\label{eq.create}
+\end{equation}
+\endgroup
+
+Using this equation we compute the $C_{opt}(x)$ for each application according to their average task CPU cycles from Table~\ref{tab.apps} for $x=512$ cores.
+$C_{gp}$ is the cost of task creation when it is performed on a general purpose core, namely the CREATE column as shown on Table~\ref{tab.apps}.
+To have optimal results for each application on systems up to 512 cores, $C_{gp}$ needs to be reduced to $C_{opt}(512)$.
+Thus the specialized hardware accelerator needs to perform task creation with a ratio $r = C_{gp}/C_{opt}(512)$ times faster than the general purpose core.
+
+We compute $r$ for each application and we observe that for the applications with a large number of per-task CPU cycles and relatively small CREATE cycles (QR512, Dedup, Ferret, Fluidanimate) $C_{gp}$ is already very close to $C_{opt}$ without the need of a faster hardware accelerator.
+For the rest of the applications, a more powerful hardware is needed.
+For these applications $r$ ranges from 3$\times$ to 197$\times$.
+In our evaluation we use the value of 16$\times$ which is a relatively small value within this range that we consider realistic to implement in hardware.
+
+\subsection{\kc{TODO: specify the hardware}}

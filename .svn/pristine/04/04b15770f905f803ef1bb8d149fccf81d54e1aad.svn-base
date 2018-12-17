@@ -1,0 +1,11 @@
+\subsection{Homogeneous systems}
+\begin{figure*}[t]%
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/homogeneous_results.pdf}
+	\vspace{-0.5cm}
+	\caption{Communication mechanism between master/workers and SRT threads.}
+	\label{fig:communication}%
+	\vspace{-0.3cm}
+\end{figure*}
+\subsection{Heterogeneous systems}
+

@@ -1,0 +1,12 @@
+\kc{Motivation and The background...
+Add an image showing the increase of runtime activity as we increase the number of cores}
+
+\begin{figure}[t]%
+	\centering
+	\includegraphics[width=1.0\columnwidth]{figures/master_thread.pdf}
+	\vspace{-0.5cm}
+	\caption{Master thread activity as we increase the number of cores.}
+	%\caption{Performance improvements on a big.LITTLE processor with different $(F,N)$ configurations, where $F$ is the total number of big cores and $N$ the total number of cores. Results are normalized to running on four little cores with pinned Pthreads.}%
+	\label{fig:master_thread}%
+	\vspace{-0.3cm}
+\end{figure}

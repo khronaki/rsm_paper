@@ -1,0 +1,22 @@
+\kc{TODO: 
+\begin{itemize}
+\item Add justification for 16x faster task creation
+\item Modify the comparison section in order to group the other approaches
+\item Modify the hetero figures adding the BASELINE+HW bar
+\item Mention that performance ratio is 4 because of the avg measured perf ratio
+\item Explain dedup performance
+\item Review Background and our work and simplify task creation
+\end{itemize}
+Proposed names instead of RAM (runtime activity manager):
+\begin{itemize}
+\item RTGen: Rapid Task Generation 
+\item TaskGenX: Task Generation eXpress
+\item GenX or xGen: Express (task) generation
+\item QTP: Quick Task Production
+\end{itemize}
+I think I prefer the RTGen but maybe the TaskGenX sounds better and people will remember it...
+}
+
+Task creation is the main bottleneck on parallel applications.
+In this paper we present how a specialized HW can overcome this issue by executing explicitly task creation.
+This design gives us high performance improvements for systems of up to 512 cores.

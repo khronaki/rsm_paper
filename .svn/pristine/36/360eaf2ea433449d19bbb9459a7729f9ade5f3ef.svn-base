@@ -1,0 +1,34 @@
+This paper presented {\proposal}, the first SW-HW co-design that decouples task creation and accelerates it on a runtime optimized hardware.
+Contrarily to previous works, our paper makes the observation that task creation is a significant bottleneck in parallel runtimes.
+Based on this we implemented {\proposal} on top of the OpenMP programming model.
+%Task creation overheads are notable especially in workloads with fine grained parallelism.
+%The more we increase the granularity and the number of cores, the more critical the task creation becomes.
+On the hardware side, our paper sets the requirements for the RTopt in order to achieve optimal results and proposes an asymmetric architecture that combines it with general purpose cores.
+
+Based on this analysis we evaluate the performance of 11 real workloads using our approach with TaskSim simulator.
+Accelerating task creation, {\proposal} achieves up to 15.8$\times$ improvement (Cholesky128) over the baseline for homogeneous systems and up to 16$\times$ (Blackscholes) on asymmetric systems when the application is launched on a little core.
+%We showed that applications with fine grained parallelism are more prone to exhibit task creation overheads and {\proposal} manages to 
+%achieve higher improvements in these cases where task creation is more important.
+%7$\times$ on asymmetric systems when the application is launched on a little core.
+% 6$\times$ average improvement
+Using {\proposal} on asymmetric systems offers a portable solution, as the task creation is not affected by the type of core that the master thread is bound to.
+
+
+We further showed that for some cases like Canneal where task creation needs to be accelerated as much as 197$\times$ in order to steadily provide enough created tasks for execution.
+However, even by using a realistic and implementable hardware approach that offers 16$\times$ speedup of task creation, achieves satisfactory results as it improves the baseline up to 14$\times$.
+
+Comparing {\proposal} against other approaches such as Carbon, Nexus, Picos++ or TaskSuperscalar that manage to transfer different parts of the runtime to the RTopt proves that {\proposal} is the most minimalistic and effective approach.
+Even if {\proposal} transfers the least possible runtime activity to the RTopt hardware it achieves better results.
+This implies that {\proposal} requires a less complicated hardware accelerator, as it is specialized for only a small part of the runtime, unlike the other approaches that need specialization for task creation, dependency tracking and scheduling.
+
+%FUTURE work...
+We expect that combining {\proposal} with an asymmetry-aware task scheduler will achieve even better results, as asymmetry introduces load imbalance.
+
+
+%From our study we obtain interesting conclusions such as:
+%\begin{itemize}
+%\item The bigger the tasks the less important the task creation overheads
+%\item {\proposal} makes current programming models more portable when running on asymmetric systems as the programmer does not have to worry for the type of core that launches the application
+%\item Accelerating task creation is actually the most critical point to achieve high performance in many core systems as from other approaches we saw that they do not scale so well compared to {\proposal}
+%\item Current task-based programming models suffer from task creation
+%\end{itemize}

@@ -1,0 +1,28 @@
+
+\kc{Motivation and The background...}
+\begin{figure}[t]%
+	\centering
+	\includegraphics[width=1.0\columnwidth]{figures/master_thread.pdf}
+	\vspace{-0.5cm}
+	\caption{Master thread activity as we increase the number of cores.}
+	%\caption{Performance improvements on a big.LITTLE processor with different $(F,N)$ configurations, where $F$ is the total number of big cores and $N$ the total number of cores. Results are normalized to running on four little cores with pinned Pthreads.}%
+	\label{fig:master_thread}%
+	\vspace{-0.3cm}
+\end{figure}
+
+\subsection{Task-based Programming Models}
+\label{sec.background}
+Task-based parallel programming models\cite{OpenMP4.0:Manual2013},\cite{OmpSs_PPL11}, \cite{OmpSs},  are widely used to facilitate the programming of parallel codes for multi-core systems.
+These programming models consist of specific annotations that the programmer can add to the application's sequential code. 
+By adding these annotations, the programmer decomposes the application into tasks and specifies the input and output data dependencies between them. 
+A compiler is responsible to translate these annotations into code by adding calls to the programming model's runtime system. 
+The runtime system is responsible for the efficient execution of the tasks with respect to the data dependencies as well as the availability of resources.
+
+The runtime system creates and manages the software threads for the execution. 
+The master thread is responsible for the creation of the tasks and the dependence analysis data structures.
+The worker threads are mainly responsible for the execution of the tasks as well as informing the data dependency data structures about the end of a task execution. 
+
+
+
+
+

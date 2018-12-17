@@ -1,0 +1,23 @@
+
+
+
+
+Papers to add:
+1. Flexible Architectural Support for Fine-Grain Scheduling, Kozyrakis
+2. Emilio's papers CATA
+3. Carbon by Kumar et.al.
+4. Xubin's, Jaume's
+5. Nexus
+6. Task superscalar
+
+
+Many works in the research community focus on hardware support to boost performance of runtime systems.
+Carbon~\cite{Carbon} accelerates the scheduling of tasks by implementing hardware ready queues.
+Picos++~\cite{Xubin} is a hardware-software co-design that supports nested tasks. 
+This design enables the acceleration of the inter-task dependencies on a special hardware.
+Nexus\#~\cite{Nexus} is a distributed hardware accelerator capable of executing the \textit{in}, \textit{out}, \textit{inout}, \textit{taskwait} and \textit{taskwait on} pragmas.
+This design requires the implementation of one hardware component for each core of an SoC.
+
+All these works focus on the hardware design. 
+Our proposal is a runtime system capable of supporting any  specialized hardware to accelerate parts of the runtime.
+Moreover we find that accelerating task creation has the most efficient outcome.

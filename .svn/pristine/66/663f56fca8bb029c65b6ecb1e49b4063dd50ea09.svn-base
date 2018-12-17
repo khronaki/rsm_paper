@@ -1,0 +1,49 @@
+
+
+
+
+%Papers to add:
+%1. Flexible Architectural Support for Fine-Grain Scheduling, Kozyrakis
+%2. Emilio's papers CATA
+%3. Carbon by Kumar et.al.
+%4. Xubin's, Jaume's
+%5. Nexus
+%6. Task superscalar\cite{TaskSS}
+
+
+Our approach is a new task-based runtime system design that enables the acceleration of task creation to overcome important bottlenecks in performance.
+Task-based runtime systems have intensively been studied.
+State of the art task-based runtime systems include the OpenMP~\cite{OpenMP}, OmpSs~\cite{OmpSs_PPL11}, StarPU~\cite{starpu} and Swan~\cite{Vandierendonck:PACT2011}.
+All these models support tasks and maintain a TDG specifying the inter-task dependencies.
+This means that the runtime system is responsible for the task creation, the dependence analysis as well as the scheduling of the tasks.
+However, none of these runtime systems offer automatic offloading of task creation.
+The fact that task-based programming models are so widely spread makes approaches like ours very important and also gives importance to works that focus on how to boost performance of such programming models with hardware support.
+
+Many works in the research community focus on adding hardware support to boost performance of task-based runtime systems by reducing the runtime overheads.
+Even if the works focus more on the hardware part of the design, their contributions are very related to our study as we can distinguish which parts of the hardware is more beneficial to be accelerated.
+
+Carbon~\cite{Carbon} accelerates the scheduling of tasks by implementing hardware ready queues.
+Carbon maintains one hardware queue per core and accelerates all possible scheduling overheads by using these queues.
+Nexus\#~\cite{Nexus} is also a distributed hardware accelerator capable of executing the \textit{in}, \textit{out}, \textit{inout}, \textit{taskwait} and \textit{taskwait on} pragmas, namely the task dependencies.
+Unlike Carbon and Nexus, RAM accelerates only task creation.
+Moreover, ADM~\cite{Sanchez:2010} is another distributed approach that proposes hardware support for the inter-thread communication to avoid the going through the memory hierarchy. 
+This aims to provide a more flexible design as the scheduling policy can be freely implemented in software.
+These designs require the implementation of one hardware component for each core of an SoC.
+Our proposal assumes a centralized hardware unit that is capable of operating without the need to change the SoC.
+
+Task superscalar~\cite{TaskSS} and Picos++~\cite{Xubin} use a single hardware component to accelerate parts of the runtime system.
+In the case of Task superscalar, all the parts of the runtime system are transferred to the accelerator.
+Picos++~\cite{Xubin} is a hardware-software co-design that supports nested tasks. 
+This design enables the acceleration of the inter-task dependencies on a special hardware.
+Swarm~\cite{Swarm} performs speculative task execution. 
+Instead of accelerating parts of the runtime system, Swarm uses hardware support to accelerate speculation.
+This is different than our design that decouples only task creation.
+
+%In our paper we present a flexible runtime system that supports the acceleration of task creation.
+To summarize, the difference between our work and the prior studies are mainly two:
+\begin{itemize}
+\item Their implementation requires changes in hardware of the SoC, meaning that they need an expensive design where each core of the chip has an extra component, while in our case we need only one hardware unit.
+\item None of the previous works is aiming in accelerating task creation overheads.
+\end{itemize}
+
+

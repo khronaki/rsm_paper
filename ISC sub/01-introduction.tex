@@ -1,0 +1,60 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \kc{Intro from big-little paper}
+%\kc{write Intro}
+Since the end of Dennard scaling~\cite{Dennard74} and the subsequent stagnation of CPU clock frequencies, computer architects and programmers rely on multi-core designs to achieve the desired performance levels.
+While multi-core architectures constitute a solution to the CPU clock stagnation problem, they bring important challenges both from the hardware and software perspectives.
+On the hardware side, multi-core architectures require sophisticated mechanisms in terms of coherence protocols, consistency models or deep memory hierarchies. 
+Such requirements complicate the hardware design process.
+On the software side, multi-core designs significantly complicate the programming burden with respect to their uni-core predecessors.
+The different CPU's are exposed to the programmer, who has to make sure to use all of them efficiently, as well as using the memory hierarchy properly by exploiting both temporal and spatial locality.
+This increasing programming complexity, also known as the Programmability Wall~\cite{Chapman2007}, has motivated the advent of sophisticated programming paradigms and runtime system software to support them.
+
+Task-based parallelism~\cite{Blumofe:PPoPP1995, Reinders2007, Bauer2012, OmpSs} has been proposed as a partial solution to the Programmability Wall and, indeed, the most relevant shared memory programming standards, like OpenMP, support tasking constructs~\cite{OpenMP4.0:Manual2013}.
+The task based model requires the programmer to split the code into several sequential pieces, called tasks, as well as explicitly specifying their input and output dependencies. 
+%It also requires these pieces of code to be annotated in terms of input or output data dependencies.
+The task-based execution model (or runtime system) consists of a master thread and several worker threads. The master thread goes over the code of the application and creates tasks once it encounters source code annotations identifying them. 
+The runtime system manages the pool of all created tasks and schedules them across the threads once their input dependencies are satisfied.
+To carry out the task management process, the parallel runtime system creates and maintains a Task Dependency Graph (TDG).
+In this graph nodes represent tasks and edges are dependencies between them.
+Once a new task is created, a new node is added to the TDG. 
+The connectivity of this new node is defined by the data dependencies of the task it represents, which are explicitly specified in the application's source code.
+When the execution of a task finalizes, its corresponding node is removed from the TDG, as well as its data dependencies.
+
+This task-based runtime system constitutes a software layer that enables parallel programmers to decouple the parallel code from the underlying parallel architecture where it is supposed to run on.
+As long as the application can be decomposed into tasks, the task-based execution model is able to properly manage it across homogeneous many-core architectures or heterogeneous designs with different core types. 
+A common practice in the high performance domain is to map a single thread per core, which enables the tasks running on that thread to fully use the core capacity. 
+Finally, another important asset of task-based parallelism is the possibility of automatically managing executions on accelerators with different address spaces. 
+Since the input and output dependencies of tasks are specified, the runtime system can automatically offload a task and its dependencies to an accelerator device (E.g. GPU) without the need for specific programmer intervention~\cite{Bueno:IPDPS2012}.
+Additional optimizations in terms of software pre-fetching~\cite{Papaefstathiou2013} or more efficient coherence protocols~\cite{Manivannan2014} can also be enabled by the task-based paradigm.
+
+Despite their advantages, task-based programming models also incur in some costs.
+For example, the process of task creation requires the traversal of several indexed tables to update the status of the parallel run by adding the new dependencies the recently created tasks bring, which produces a certain overhead.
+Such overhead constitutes a significant burden, especially on architectures with several 10's or 100's of cores where tasks need to be created in a very fast rate to feed all of them.
+This paper proposes the Task Generation Express ({\proposal}) approach. 
+Our proposal suggests that the software and hardware are designed to eliminate the most important bottlenecks of task-based parallelism without hurting their multiple advantages. 
+This paper focuses on the software part of this proposal and draws the requirements of the hardware design to achieve significant results.
+%This paper proposes the Task Generation Express ({\proposal}) approach, a combined hardware-software solution to eliminate the most important bottlenecks of task-based parallelism without hurting their multiple advantages.
+In particular, this paper makes the following contributions beyond the state-of-the-art:
+
+\begin{itemize}
+
+\item A new parallel task-based runtime system that decouples the most costly routines from the other runtime activities and thus enables them to be off-loaded to specific-purpose helper cores.
+
+\item A detailed study of the requirements of a specific-purpose helper core able to accelerate the most time consuming runtime system activities. 
+%To accelerate the time consuming runtime parts,
+%\item A specific-purpose helper core able to accelerate the most time consuming runtime system activities. This hardware is also able to run user-level tasks, although it does so in a very slow way compared to a general purpose core.
+
+\item A complete evaluation via trace-driven simulation considering 11 parallel OpenMP codes and $25$ different system configurations, including homogeneous and heterogeneous systems. %and large core counts up to $XXX$ cores. 
+Our evaluation demonstrates how {\proposal} achieves average speedups of $3.1\times$ when compared against currently use state-of-the-art approaches.
+
+\end{itemize} 
+
+The rest of this document is organized as follows: 
+Section~\ref{sec:background} describes the task-based execution model and its main bottlenecks.
+Section~\ref{sec:ram} describes the new task-based runtime system this paper proposes as well as the specialized hardware that accelerates the most time-consuming runtime routines.
+Section~\ref{sec:experimental} contains the experimental set-up of this paper.
+Section~\ref{sec:evaluation} describes the evaluation of {\proposal} via trace-driven simulation.
+Finally, Section~\ref{sec:related} discusses related work and Section~\ref{sec:conclusions} concludes this work.
+

@@ -1,0 +1,161 @@
+\subsection{Homogeneous systems}
+%\begin{figure}[t]%
+%    \label{fig:speedup_homo}
+%	\centering
+%	%\begin{subfigure}
+%	\includegraphics[width=1.0\textwidth]{figures/speedup_homo.pdf}
+%	%\caption{test}
+%	%\end{subfigure}
+%	%\begin{subfigure}
+%	\includegraphics[width=1.0\textwidth]{figures/speedup_homo2.pdf}
+%	%\end{subfigure}
+%	\vspace{-0.5cm}
+%	\caption{Communication mechanism between master/workers and SRT threads.}
+%	\vspace{-0.3cm}
+%\end{figure}
+
+Figures~\ref{fig:speedup_homo1} and~\ref{fig:speedup_homo2} show the speedup over one core of three different scenarios: the baseline runtime system (BASELINE), which is the default runtime without using any external hardware support, the baseline runtime system that uses the external hardware (BASELINE+HW), and RAM that by default uses the external hardware when running on up to 512 cores.
+In the case of BASELINE+HW the specialized hardware acts as a very slow general purpose core that is additional to the number of cores shown on the x axis.
+If this core executes a task creation job, it executes it 16$\times$ faster, but as it is specialized for this, we assume that when a task is executed on this core it is executed 4$\times$ slower than in a general purpose core.
+The runtime system in this case does not include our modifications that automatically decouple the task creation step for each task.
+This comparison is used only to show that the baseline runtime is not capable of utilizing the accelerator and in most of the cases performance degrades due to the scheduling with increased heterogeneity of the system.
+
+Focusing on the average results first, we can observe that RAM constantly improves the baseline and the improvement is increasing as we increase the number of cores, reaching up to 6$\times$ better performance on 512 cores. 
+This is because as we increase the number of cores, the task creation overhead becomes more critical part of the execution time and affects performance even more.
+So, this becomes the main bottleneck due to which the performance of many applications saturates. 
+RAM overcomes it by automatically detecting and moving task creation on the specialized hardware.
+
+Moving in more detail, we can see that all the applications have a saturation point in speedup.
+For example Cholesky32K256 saturates on 64 cores, while QR512 on 256 cores.
+In most cases this saturation in performance comes due to the task creation that is executed sequentially for an important percentage of the execution time (as shown in Figure~\ref{fig:master_thread}). 
+This is solved with RAM as it efficiently decouples the task creation code and accelerates it leading in higher speedups.
+
+RAM is effective as it either improves performance or it performs as fast as the baseline (there are no slowdowns). 
+The applications that do not benefit (QR512, Ferret, Fluidanimate) are the ones with the highest average per task CPU cycles as shown on Table~\ref{tab.apps}.
+Even if these applications consist of many tasks, the task creation overhead is considered negligible compared to the task cost, so accelerating it does not help much. 
+\begin{figure*}[!t]
+\centering
+\begin{subfigure}[b]{\textwidth}
+  \includegraphics[width=\textwidth]{figures/speedup_homo.pdf}
+  \caption{Speedup of CATS, dHEFT and BF on 8 cores compared to the ideal}
+  \label{fig:speedup_homo1}
+\end{subfigure}
+
+\begin{subfigure}[b]{\textwidth}
+  \includegraphics[width=\textwidth]{figures/speedup_homo2.pdf}
+  \caption{Cholesky 8$\times$8}
+  \label{fig:speedup_homo2}
+\end{subfigure}
+
+\caption{test}
+\end{figure*}
+This can be verified by the results shown for QR16K128 workload.
+In this case, we use the same input size as QR512 (which is 16K) but we modify the block size, which results in more and smaller tasks.
+This not only increases the speedup of the baseline, but also shows even higher speedup when running with RAM reaching very close to the ideal speedup and improving the baseline by 2.3$\times$.
+\begin{figure*}[t]%
+	\centering
+	\includegraphics[width=\textwidth]{figures/speedup_hetero_avg.pdf}
+	\caption{Average speedup on heterogeneous simulated systems}
+	\label{fig:hetero}%
+	\vspace{-0.3cm}
+\end{figure*}
+Modifying the block size for Cholesky, shows the same effect in terms of RAM over baseline improvement.
+However, for this application, using the bigger block size of 256 is more efficient as a whole.
+Nevertheless, RAM improves the cases that performance saturates and reaches up to 8.5$\times$ improvement for the 256 block-size, and up to 16$\times$ for the 128 block-size.
+
+Blackscholes and Canneal, are applications with very high task creation overheads compared to the task size as shown on Table~\ref{tab.apps}.
+This makes them very sensitive to performance degradation due to task creation, thus the application saturates even with limited core counts of 8 or 16 cores.
+These are the ideal cases for using RAM as such bottlenecks are eliminated and performance is improved by 16$\times$ and 14$\times$ respectively.
+However, it is interesting to observe that for Canneal for which the task creation lasts a bit less than half of the task execution time, accelerating it by 16 times is not enough and soon performance saturates at 64 cores. 
+In this case, a more powerful hardware would improve things even more.
+
+Streamcluster has also relatively high task creation overhead compared to the average task cost so improvements are increased as the number of cores is increasing.
+RAM reaches up to 7.6$\times$ improvement in this case.
+
+The performance of Bodytrack saturates on 64 cores for the baseline. 
+However, it does not approach the ideal speedup as its pipelined parallelization technique introduces significant task dependencies that limit parallelism.
+RAM still improves the baseline by up to 37\%.
+This improvement is low compared to other benchmarks, firstly because of the nature of the application and secondly because Bodytrack introduces nested parallelism, meaning that in this case, task creation is spread among cores and is not becoming a sequential overhead as happens in most of the cases.
+Thus, in this case it is not correct to look at the CREATE overhead value as this is be parallelized among all cores for the 329\,123 tasks of the application. 
+
+
+\subsection{Heterogeneous systems}
+
+
+%Figure~\ref{fig:hetero} shows the average speedup obtained among the same applications. 
+At this part of the evaluation our system supports two types of general purpose processors, simulating an asymmetric ARM big.LITTLE multi-core processor.
+In our simulations, we assume that the big cores are four times faster than the little cores of the system.
+This assumption is based on prior works~\cite{Chronaki:TPDS} that have shown that for most applications the performance ratio ranges from 3.5$\times$ to 4.5$\times$.
+In this set-up there are two different ways of executing a task-based application.
+The first way is to start the application's execution on a big core of the system and the second way is to start the execution on a little core of the system.
+If we use a big core to launch the application, then this implies that the master thread of the runtime system (the thread that performs the task creation when running with the baseline) runs on a fast core, thus tasks are created faster than when using a slow core as a starting point.
+We evaluate both approaches and compare the results of the baseline runtime and RAM.
+
+On Figure~\ref{fig:hetero} we plot the average speedup over one little core obtained among all 11 workloads.
+The chart shows two categories of results on the x axis, separating the cases of the master thread's execution.
+The numbers of the bottom of x axis show the total number of cores and the numbers above show the number of big cores.
+The bars represent the average speedup when running with the baseline runtime or with RAM and the line shows the ideal speedup for of each configuration.
+The ideal speedup is the speedup that we would obtain if we were running an application in parallel assuming zero runtime overheads and no dependencies between tasks, technically unachievable for the real applications of our evaluation.
+Equation~\ref{eq.ideal} shows how the ideal speedup is computed for our simulated system where the big cores are four times faster than the little cores.
+\begingroup\makeatletter\def\f@size{9}\check@mathfonts
+\begin{equation}
+  \text{ideal\_speedup(big, little) = big $\times$ 4 + little}
+\label{eq.ideal}
+\end{equation}
+\endgroup
+
+The results show that moving the master thread from a big to a little core degrades performance of the baseline.
+This is because the task creation becomes even slower so the rest of the cores spend more idle time waiting for the tasks to become ready.
+RAM improves performance in both cases.
+Specifically when master runs on big, the average improvement of RAM reaches 2$\times$.
+When the master thread runs on a little core, RAM improves performance by up to 7$\times$. 
+This is mainly due to the slowdown caused by the migration of master thread on a little core.
+Using RAM on asymmetric systems achieves approximately similar performance regardless of the type of core that the master thread is running. 
+This makes our proposal more portable for asymmetric systems as the programmer does not have to be concerned about the type of core that the master thread migrates.
+
+\subsection{Comparison to other approaches}
+%Figure~\ref{fig:comparison} shows the average improvement for each core count over the baseline scheduler. 
+As we saw earlier, RAM improves the baseline scheduler by up to 6.3$\times$ for 512 cores.
+In this section we compare RAM with other approaches.
+To do so, we consider the works of Carbon~\cite{Carbon}, Task Superscalar~\cite{TaskSS}, Picos++~\cite{Xubin} and Nexus\#~\cite{Nexus}.
+We group these works based on the part of the runtime activity they are offloading from the CPU.
+Carbon and Task Superscalar, are runtime-driven meaning that they both accelerate all the runtime and scheduling parts.
+The insertion of a task in the TDG, the dependence analysis as well as the scheduling, namely the ready queue manipulation are transferred to the special hardware with these approaches. 
+These overheads are represented on Table~\ref{tab.apps} under ALL.
+The second group of related works that we compare is the dependencies driven, which includes approaches like Picos++ and Nexus\#. 
+These works aim to accelerate only the dependence analysis part of the runtime as well as the scheduling that occurs when a dependency is satisfied.
+For example, when a task finishes execution, and it has produced input for another task, the dependency tracking mechanism is updating the appropriate counters of the reader task and if the task becomes ready, the task is inserted in the ready queue.
+The insertion into the ready queue is the scheduling that occurs with the dependence analysis.
+
+
+%To compare RAM with other systems, we emulate the behaviour of Carbon~\cite{Carbon} and Picos++~\cite{Xubin} in our system.
+%In this emulation, we implement Carbon, that originally accelerates scheduling by using hardware queues. 
+%To do so we decouple all the possible scheduling overheads and send them for execution by the accelerator. 
+%The average per-task scheduling overheads measured are shown on Table~\ref{tab.apps} under SCHED.
+%These overheads might seem high compared to the CREATE overheads that RAM accelerates but they are executed among all threads so at the end they do not induce as much delay as task creation does.
+%The difference between our Carbon implementation and the original one is that the original one assumes multiple hardware queues, which enables the parallel manipulation by the threads.
+%In our case, we are limited to only one queue, as we want to compare an approach that would be as cheap as the RAM approach and use a single hardware component.
+
+Figure~\ref{fig:compare} shows the average improvement in performance for each core count over the performance of the baseline scheduler on the same core count. 
+The RUNTIME represents the runtime driven approaches and the DEPS represents the dependencies driven approaches as described above.
+Accelerating the scheduling with RUNTIME-driven is as efficient as RAM for a limited number of cores, up to 32.
+This is because they both accelerate the scheduling that is involved during task to TDG insertion which is an important part of task creation. 
+DEPS driven approaches on the other hand are not as efficient since the task creation step takes place on the master thread.
+Increasing the number of cores, we observe that the improvement of RUNTIME-driven over the baseline is reduced and stabilized close to 3$\times$ while RAM continues to speedup the execution. 
+We attribute this to the fact that serializing the scheduling operations becomes a bottleneck when increasing the number of cores.
+Serializing the scheduling overheads of up to 32 cores, is efficient but with an increased number of cores it is better to perform scheduling in a distributed manner, just as RAM allows.
+
+DEPS driven works go through the same issue of the serialization of the dependency tracking and the scheduling that occurs at the dependence analysis stage.
+The reason for the limited performance of DEPS compared to RUNTIME is that DEPS does not accelerate any part of the task creation. 
+Improvement over the baseline is still significant as performance with DEPS is improved by up to 1.54$\times$.
+
+RAM is the most efficient software-hardware co-design approach when it comes to highly parallel applications.
+On average, it improves the baseline up to 6.3$\times$ for homogeneous systems and up to 6.6$\times$ for heterogeneous systems.
+Compared to other state of the art approaches, RAM is more effective on a large number of cores showing higher performance by 54\% over RUNTIME driven approaches and by 70\% over DEPS driven approaches.
+\begin{figure}[t]%
+	\centering
+	\includegraphics[width=0.48\textwidth]{figures/comparison.pdf}
+	\caption{Average improvement over baseline}
+	\label{fig:compare}
+	\vspace{-0.3cm}
+\end{figure}

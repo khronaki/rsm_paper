@@ -1,0 +1,18 @@
+\kc{TODO: 
+\begin{itemize}
+\item Write intro
+\end{itemize}
+Proposed names instead of RAM (runtime activity manager):
+\begin{itemize}
+\item CreTA Creation of Tasks Accelerated
+\item RTGen: Rapid Task Generation 
+\item TaskGenX: Task Generation eXpress
+\item GenX or xGen: Express (task) generation
+\item QTP: Quick Task Production
+\end{itemize}
+I think I prefer the RTGen but maybe the TaskGenX sounds better and people will remember it...
+}
+
+Task creation is the main bottleneck on parallel applications.
+In this paper we present how a specialized HW can overcome this issue by executing explicitly task creation.
+This design gives us high performance improvements for systems of up to 512 cores.

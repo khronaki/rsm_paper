@@ -1,0 +1,10 @@
+Comments addressed:
+Reviewer1:
+1. Comment b: rephrased accordingly in Section 2.1 paragraph Listing 1.2 shows…: “The runtime keeps a distributed unified dependency tracking structure”
+2. Comment c: Section 2.1 paragraph Listing 1.2 shows… modified “The TDG is a distributed and dynamic graph structure that the runtime uses to keep the information about the current tasks of the application.”
+3. All the comments in “Details” addressed throughout the text.
+Reviewer2:
+1. Comment a: Added text and reference in Section 4.2: “The tracing overhead of the simulator is less than 10\% and the simulation is accurate as long as there is no contention in the shared memory resources on a real system~\cite{MUSA}.”
+2. Corrected BAR URL in references
+3. Corrected reference abbreviations mentioned
+

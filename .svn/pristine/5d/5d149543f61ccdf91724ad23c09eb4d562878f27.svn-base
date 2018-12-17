@@ -1,0 +1,90 @@
+\begin{table*}
+\begin{center}
+\caption{Evaluated benchmarks and relevant characteristics}
+\label{tab.apps}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\multirow{3}{*}{\parbox{15mm}{\centering Application}} & 
+\multirow{3}{*}{Problem size} & 
+\multirow{3}{*}{\parbox{11mm}{\centering \#Tasks}} & 
+%\multirow{2}{*}{\parbox{9mm}{\centering \#Task types}} & 
+\multirow{3}{*}{\parbox{18mm}{\centering Avg task CPU cycles (thousands)}} & 
+\multicolumn{3}{|c|}{Per task overheads (CPU cycles)} & & \\
+\cline{5-7}
+& & & & \multirow{2}{*}{\parbox{10mm}{\centering CREATE}} & \multirow{2}{*}{\parbox{10mm}{\centering ALL}} & \multirow{2}{*}{\parbox{10mm}{\centering DEPS + SCHED}} & \multirow{2}{*}{\parbox{13mm}{\centering Measured perf. ratio}} &
+\multirow{2}{*}{\parbox{15mm}{\centering Parallel model}} \\
+& & & & & & & &\\ %\hhline{~~~~~~}
+\hline
+
+\multirow{2}{*}{\parbox{25mm}{\centering Cholesky factorization}} & 
+32K 256Bsize & 357\,762  & 753 & 15221 &  73286 &  58065 &  \multirow{2}{*}{\parbox{9mm}{\centering 3.5}} & \multirow{2}{*}{\parbox{15mm}{\centering dependencies}}\\                                              & 32K 128Bsize & 2829058 & 110 & 17992 &  58820 &  40828 & &\\
+%& 32$\times$32 blocks of 512$\times$512 floats & 5984 & & 1\,551\,322 & 104.76 &  238.02 &  194.28  & \\ 
+\hline{}
+\multirow{2}{*}{\parbox{25mm}{\centering QR factorization}} & 16K 512Bsize & 11\,442 & 518\,570  & 17595 & 63008 &   45413 & \multirow{2}{*}{\parbox{9mm}{\centering 6.8}} &\multirow{2}{*}{\parbox{15mm}{\centering dependencies}}\\
+&  16K 128Bsize & 707\,265 & 3\,558 & 21642 & 60777 & 39135 & &\\
+\hline
+Blackscholes & native & 488\,202 & 348  &   29141  &  85438 &  56297 & 2.3 & data-parallel \\
+\hline
+Bodytrack & native & 329\,123 & 383 &  9\,505 &  18979 & 9474 & 4.2 & pipeline \\ 
+%Heat diffusion & Heat &  &  &  &  &  & \\ 
+\hline
+Canneal & native & 3\,072\,002 & 67 & 25781 & 50094 &  24313 & 2.0 & unstructured \\
+\hline
+Dedup & native & 20\,248 & 1\,532 & 1294 & 9647 &  8353 & 2.7 & pipeline \\
+\hline 
+Ferret & native$\times$2 & 84\,002 & 29\,088 & 38913 & 98457 &  59544 & 3.6 & pipeline \\
+\hline
+Fluidanimate & native & 128\,502 & 16\,734 & 30210 & 94079 &  64079 & 3.3 & data-parallel \\
+\hline
+Streamcluster & native & 3\,184\,654 & 161 & 6892 & 13693 &  6801 & 3.5 & data-parallel \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-0.4cm}
+\end{table*}
+
+\subsection{Applications}
+%\begin{itemize}
+%\item Blackscholes
+%\item Cholesky
+%\item Canneal
+%\item Fluidanimate
+%\item QR Factorization
+%\item Bodytrack
+%\item Streamcluster
+%\end{itemize}
+Table~\ref{tab.apps} shows the evaluated applications, the input sizes used, and their characteristics. 
+All applications are implemented using the OmpSs programming model~\cite{OmpSs_PPL11}. 
+We obtain Cholesky and QR from the BAR repository~\cite{BAR} and we use the implementations of the rest of the benchmarks from the PARSECSs suite~\cite{Chasapis:TACO2016}.
+More information about these applications can be found in~\cite{Chasapis:TACO2016} and~\cite{Chronaki:ICS2015}.
+We choose the input sizes of the applications so that they create enough tasks to feed up to 512 cores.
+The number of tasks for each application and input as well as the average per-task CPU cycles can be found on Table~\ref{tab.apps}.
+
+
+
+
+
+\subsection{Simulation}
+To evaluate {\proposal} we make use of the TaskSim simulator~\cite{AbstrLevels_TACO12}. 
+TaskSim is a trace driven simulator, that supports the specification of homogeneous or heterogeneous systems with many cores. 
+By default, TaskSim allows the specification of the amount of cores and supports up to two core types in the case of heterogeneous asymmetric systems. 
+This is done by specifying the number of cores of each type and their difference in performance between the different types (performance ratio) in the TaskSim configuration file.
+
+Our evaluation consists of experiments on both symmetric and asymmetric platforms with the number of cores varying from 8 to 512.
+In the case of asymmetric systems we simulate the behaviour of an ARM big.LITTLE architecture~\cite{ARM}.
+To set the correct performance ratio between big and little cores we measure each application on a real ARM big.LITTLE platform and we compare its performance when they run on a little and on a big core.
+Table~\ref{tab.apps} shows the measured performance ratio for each case.
+The average performance ratio if we take into account our 11 workloads is 3.8.
+Thus in the specification of the asymmetric systems we use as performance ratio between big and little cores the value 4.
+
+To simulate our approaches using TaskSim we first run each application/input in the TaskSim trace generation mode.
+This mode enables the online tracking of task duration and synchronization overheads and stores them in a trace file. 
+To perform the simulation, TaskSim uses the information stored in the trace file and executes the application by providing this information to the runtime system.
+For our experiments we generate three trace files for each application/input combination on a Genuine Intel 16-core machine running at 2.60GHz.
+
+We modify TaskSim so that it features one extra hardware accelerator (per multi-core) responsible for the fast task creation.
+Apart from the task duration time, our modified simulator tracks the duration of the runtime overheads.
+These overheads include: (a) task creation and (b) dependencies resolution and (c) scheduling.
+When this accelerator executes a task creation job, it finishes it 16$\times$ faster than a general purpose core due to the analysis done in Section~\ref{sec:hw_req}. 
+Contrarily, if the accelerator is assigned a task to execute, it executes it 4$\times$ slower than a general purpose core.
+The results obtained show the average results among three different traces for each application-input.

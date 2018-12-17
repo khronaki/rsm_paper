@@ -1,0 +1,9 @@
+
+There has been a lot of studies on AMC systems. Some works focus on the design of the system, while other works explore the challenges that appear in efficiently utilizing such a heterogeneous system.
+Kumar et al~\cite{Kumar_micro_2003} present the idea of an AMC system and proposed a feedback-based way to dynamically migrate processes among the different cores. 
+
+
+Papers to add:
+1. Flexible Architectural Support for Fine-Grain Scheduling, Kozyrakis
+2. Emilio's papers
+3. Carbon by Kumar et.al.

@@ -1,0 +1,60 @@
+AQ2: 
+Please modify the affiliations as follows:
+
+All authors: Barcelona Supercomputig Center (BSC), Barcelona, Spain
+Second affiliation for Kallia Chronaki and Miquel Moreto: Universitat Politècnica de Catalunya (UPC), Barcelona, Spain 
+Second affiliation for Rosa M. Badia: Spanish National Research Council (CSIC), Bellaterra, Spain
+
+(emails remain the same)
+
+AQ3:
+We would like to separate these Figures and use for Figure 2a the number Figure 2 and Figure 2b becomes Figure 3.
+Then update also the next Figures of the document accordingly.
+
+Other remarks:
+1. The references 1 and 21 are the same. Could you remove the reference number 21 of them and use the other instead?
+
+2. The refereces 22, 25 and 26 should use short conference mames.
+These should appear as: 
+reference 22:  
+Papaefstathiou, V., Katevenis, M.G., Nikolopoulos, D.S., Pnevmatikatos, D.:
+Prefetching and cache management using task lifetimes. In: ICS 2013, pp. 325–334 (2013)
+reference 25:
+ Sanchez, D., Yoo, R.M., Kozyrakis, C.: Flexible architectural support for fine-grain
+scheduling. In: ASPLOS, pp. 311–322 (2010)
+reference 26:
+Sjalander, M., Terechko, A., Duranton, M.: A look-ahead task management unit
+for embedded multi-core architectures. In: EUROMICRO DSD, pp. 149–157 (2008)
+
+3. In the abstract add the word "multicore" before "systems" in the last sentence:
+"From our evaluation using 11 parallel workloads on both symmetric and asymmetric multicore systems,
+we obtain performance improvements up to 15×, averaging to 3.1× over the baseline."
+
+4. Add the following reference in the related work at the end of the sentence "These designs require the implementation of a hardware component for each core of an SoC[REF]": 
+[REF]Emilio Castillo, Lluc Alvarez, Miquel Moretó, Marc Casas, Enrique Vallejo, José Luis Bosque, Ramón Beivide, Mateo Valero:
+Architectural Support for Task Dependence Management with Flexible Software Scheduling. In: HPCA, pp. 283-295 (2018)
+
+5. In the entire document: replace multi-core/Multi-core with multicore/Multicore 
+
+6. In some places throughout the document Section is written as Sect.. Please modify it throughout the entire document so that it is cosistently referred as "Section"
+
+7. We would like to respect the page limit of 20 pages. As I see the proof is 21 pages long, while our original camera-ready document was 19 pages long. Maybe the font size has changed?
+
+8. Please allow some space between the introduction text and the Springer Copyright.
+
+9. Figure 1 should be on the top of the previous page of where Listing 1.4 is. So in the proof, it should be on page 6.
+
+10. Listing 1.5 should be on page 8 according to the proof. (one page earlier)
+
+11. Figure 2 (both figures side by side) should be one page earlier (page 9 of the proof)
+
+12. Table 1 should be one page earlier (page 10 of the proof)
+
+13. Figure 3 should be one page earlier (page 12 of the proof)
+
+14. Figure 4 should be at the top of the next page of Figure 3
+
+15. Figure 6 should be at the top of the page (the next page after Figure 5)
+
+16. Please balance the emails so that there are three emails on the first row and two emails on the second row.
+

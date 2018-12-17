@@ -1,0 +1,8 @@
+We propose a hardware and software solution to overcome the performance bottleneck described in the previous section. 
+In our system we assume the existence of a specialized hardware that is responsible for the fast execution of the task creation. 
+To use such a hardware we need flexible software that manages to move the task creation to be executed there.
+
+The software that we employ uses a specialized queue for the task creation requests. 
+Each thread that is about to create a task instead of creating it, it inserts a task creation request in this queue. 
+The responsible hardware then reads the queue and executes the requests.
+

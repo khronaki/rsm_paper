@@ -1,0 +1,19 @@
+As chip multi-processors (CMPs) are becoming more and more complex, software solutions such as parallel programming models are attracting a lot of attention.
+Task-based parallel programming models offer an appealing approach to utilize complex CMPs.
+However, the increasing number of cores on modern CMPs is pushing research towards the use of fine grained parallelism.
+Task-based programming models need to be able to handle such workloads and offer performance and scalability.
+Using specialized hardware for boosting performance of task-based programming models is a common practice in the research community.
+
+Our paper first makes the observation that task creation becomes a bottleneck when we execute fine grained parallel applications with task-based programming models.
+As the number of cores increases the time spent generating the tasks of the application is becoming more critical to the entire execution.
+To overcome this issue, we propose {\proposal}.
+{\proposal} offers a solution for minimizing task creation overheads and relies both on the runtime system and a dedicated hardware.
+%We propose \proposal, a task-based programming model that offers a minimalistic approach to runtime overheads acceleration.
+On the runtime system side, {\proposal} decouples the task creation from the other runtime activities.
+It then transfers this part of the runtime to a specialized hardware.
+We draw the requirements for this hardware in order to boost execution of highly parallel applications.
+From our evaluation using 11 parallel workloads on both symmetric and asymmetric systems, we obtain performance improvements up to 15$\times$, averaging to 3.1$\times$ over the baseline.
+
+
+%In this paper we present how a specialized HW can overcome this issue by executing explicitly task creation.
+%This design gives us high performance improvements for systems of up to 512 cores.

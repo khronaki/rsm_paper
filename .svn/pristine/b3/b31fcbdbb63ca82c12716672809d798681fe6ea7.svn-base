@@ -1,0 +1,65 @@
+%We propose a hardware and software solution to overcome the performance bottleneck described in the previous section. 
+%In our system we assume the existence of a specialized hardware that is responsible for the fast execution of the task creation. 
+%To use such a hardware we need flexible software that manages to move the task creation to be executed there.
+
+%The software that we employ uses a specialized queue for the task creation requests. 
+%Each thread that is about to create a task instead of creating it, it inserts a task creation request in this queue. 
+%The responsible hardware then reads the queue and executes the requests.
+
+In this paper we propose a semi-centralized runtime system that dynamically separates the most computationally intensive parts of the runtime system and accelerates them on specialized hardware. 
+We implement our mechanism on top of a distributed runtime system that uses dynamic scheduling.
+
+The baseline runtime system creates one thread per core. 
+At the beginning of the execution, the \textit{master} thread creates all the appropriate \textit{worker} threads and data structures and initiates the parallel execution.
+The \textit{workers} are then executing the tasks that become ready for execution and also inform the appropriate data structures for the satisfaction of the task dependencies.
+
+
+\subsection{Implementation}
+Our proposal relieves the master and worker threads from the intensive runtime activity by offloading it on the special purpose hardware.
+When execution starts, the runtime system first identifies the existence of specialized hardware by checking the core characteristics. 
+If there is such hardware the runtime system binds the Special Runtime Thread (SRT) onto this core and stores the thread id.
+For the rest of the available cores, the system binds one worker thread per core.
+The worker threads then start to look for ready tasks in the ready queue and if there are, they execute them.
+The SRT on the other hand, instead of querying the ready queue for tasks, it looks for runtime activity requests in the Runtime Ready Queue (RRQ) and if there are requests residing in the queue, it executes them.
+
+\kc{MASTER \& WORKER THREADS:}
+When the master thread is creating and inserting tasks in the Task dependency Graph (TDG) it performs two steps. First is the memory allocation of the task; this ensures to allocate the appropriate amount of memory for the task code as well as the arguments of the task. The second part which is the most complex, is the insertion of the task to the TDG also named \textit{task submission}. We described this phase in detail in Section~\ref{sec.background}. \kc{TODO: describe this phase in detail in background}
+Our new runtime proposal enables the offloading of \textit{task submission} from the master thread. To do so, when a thread encounters a call to the submit procedure, the runtime system checks the ID of this thread. If this thread is not the SRT, then instead of performing the task submission itself, it creates a \textit{SUBMIT} request and inserts it in the RRQ so that the SRT can read and execute it. The thread then continues by executing tasks. 
+
+\begin{lstlisting}[float, emph={void,if,return,non_critical_queue, critical_queue,not,true,and,break}, captionpos=b, caption={Pseudo-code for the SRT loop.},label=SRTloop, emph={[2]mat}, emphstyle={[2]}, aboveskip={0\baselineskip}, frame=tb, belowskip={0\baselineskip}]
+1 void SRTloop() {
+   int maxTasks = runtime.numWorkers * MAX;
+2  while( true ) {   
+3    while( not RRQ.empty() ) {
+4      executeRequest( RRQ.pop() );
+5    if( RRQ.empty() and readyTasks > maxTasks )
+7      executeTask( readyQ.pop() );
+8  }
+9  if( runtime.SRTstop() ) break;
+10 return; 
+11}  
+\end{lstlisting}
+
+\begin{figure}[t]%
+	\centering
+	\includegraphics[width=1.0\columnwidth]{figures/communication.pdf}
+	\vspace{-0.5cm}
+	\caption{Communication mechanism between master/workers and SRT threads.}
+	\label{fig:communication}%
+	\vspace{-0.3cm}
+\end{figure}
+\kc{SRT job:}
+At the same time that the master and worker threads are executing tasks, the SRT is looking for \textit{task submission} requests in the RRQ to execute.
+Listing~\ref{SRTloop} shows the code that the SRT is executing until the end of the parallel execution.
+The special runtime thread continuously checks whether there are requests in the RRQ (line 3). As long as there is a task waiting for submission, the SRT executes the task submission and inserts the task in the TDG with a call to the \texttt{executeRequest} (line 4). If at some point the RRQ becomes empty, the SRT checks the number of ready tasks in the ready queue (lines 5, 6) and if the number of ready tasks is greater than \texttt{maxTasks}, which means that the workers are very loaded, it executes the next ready tasks in the queue. 
+
+\kc{communication:} To relieve the master and worker threads from the intensive runtime activity we use a simple queueing communication scheme that offloads the task submission on a specialized hardware.
+Whenever a thread encounters a task submission phase, instead of executing the submit call of the scheduler, it creates a runtime request and inserts it in the RRQ. 
+Concurrently, the SRT queries the RRQ for runtime requests and as long as there are requests available it executes them.
+Moreover, the SRT executes tasks whenever there are no requests for a long time to speedup the execution.
+
+
+
+
+
+

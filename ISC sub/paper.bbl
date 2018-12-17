@@ -1,0 +1,159 @@
+\begin{thebibliography}{10}
+
+\bibitem{starpu}
+C.~Augonnet, S.~Thibault, R.~Namyst, and P.-A. Wacrenier.
+\newblock {StarPU: A Unified Platform for Task Scheduling on Heterogeneous
+  Multicore Architectures}.
+\newblock {\em Concurr. Comput. : Pract. Exper.}, 23(2), 2011.
+
+\bibitem{OmpSs}
+E.~Ayguad\'{e}, R.~Badia, P.~Bellens, D.~Cabrera, A.~Duran, R.~Ferrer,
+  M.~Gonz\`{a}lez, F.~Igual, D.~Jim\'{e}nez-Gonz\'{a}lez, J.~Labarta,
+  L.~Martinell, X.~Martorell, R.~Mayo, J.~P\'{e}rez, J.~Planas, and
+  E.~Quintana-Ort\'{i}.
+\newblock {Extending OpenMP to Survive the Heterogeneous Multi-Core Era}.
+\newblock {\em International Journal of Parallel Programming}, 38(5-6), 2010.
+
+\bibitem{BAR}
+{Barcelona Supercomputing Center}.
+\newblock {Barcelona Application Repository}.
+\newblock Available online on April 18th, 2014.
+
+\bibitem{Bauer2012}
+M.~Bauer, S.~Treichler, E.~Slaughter, and A.~Aiken.
+\newblock Legion: Expressing locality and independence with logical regions.
+\newblock In {\em SC}, pages 66:1--66:11, 2012.
+
+\bibitem{Blumofe:PPoPP1995}
+R.~D. Blumofe, C.~F. Joerg, B.~C. Kuszmaul, C.~E. Leiserson, K.~H. Randall, and
+  Y.~Zhou.
+\newblock Cilk: An efficient multithreaded runtime system.
+\newblock In {\em PPoPP}, pages 207--216, 1995.
+
+\bibitem{OpenMP}
+O.~A.~R. Board.
+\newblock {OpenMP Specification}.
+\newblock 4.5, 2015.
+
+\bibitem{Bueno:IPDPS2012}
+J.~Bueno, J.~Planas, A.~Duran, R.~M. Badia, X.~Martorell, E.~Ayguad{\'{e}}, and
+  J.~Labarta.
+\newblock Productive programming of {GPU} clusters with {OmpSs}.
+\newblock In {\em IPDPS}, pages 557--568, 2012.
+
+\bibitem{Chapman2007}
+B.~Chapman.
+\newblock {\em The Multicore Programming Challenge}, pages 3--3.
+\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 2007.
+
+\bibitem{Chasapis:TACO2016}
+D.~Chasapis, M.~Casas, M.~Moreto, R.~Vidal, E.~Ayguade, J.~Labarta, and
+  M.~Valero.
+\newblock {PARSECSs: Evaluating the Impact of Task Parallelism in the PARSEC
+  Benchmark Suite}.
+\newblock {\em Trans. Archit. Code Optim.}, 2015.
+
+\bibitem{Chronaki:ICS2015}
+K.~Chronaki, A.~Rico, R.~M. Badia, E.~Ayguad{\'{e}}, J.~Labarta, and M.~Valero.
+\newblock Criticality-aware dynamic task scheduling for heterogeneous
+  architectures.
+\newblock In {\em ICS}, pages 329--338, 2015.
+
+\bibitem{Nexus}
+T.~Dallou, N.~Engelhardt, A.~Elhossini, and B.~Juurlink.
+\newblock Nexus\#: A distributed hardware task manager for task-based
+  programming models.
+\newblock In {\em IPDPS}, pages 1129--1138, 2015.
+
+\bibitem{Dennard74}
+R.~Dennard, F.~Gaensslen, V.~Rideout, E.~Bassous, and A.~LeBlanc.
+\newblock {Design of Ion-implanted MOSFET's with Very Small Physical
+  Dimensions}.
+\newblock In {\em Solid-State Circuits, IEEE Journal of}, volume~9, 1974.
+
+\bibitem{OmpSs_PPL11}
+A.~Duran, E.~Ayguad\'{e}, R.~M. Badia, J.~Labarta, L.~Martinell, X.~Martorell,
+  and J.~Planas.
+\newblock {Ompss: a Proposal for Programming Heterogeneous Multi-Core
+  Architectures.}
+\newblock {\em Parallel Processing Letters}, 21, 2011.
+
+\bibitem{TaskSS}
+Y.~Etsion, F.~Cabarcas, A.~Rico, A.~Ramirez, R.~M. Badia, E.~Ayguade,
+  J.~Labarta, and M.~Valero.
+\newblock Task superscalar: An out-of-order task pipeline.
+\newblock In {\em MICRO}, pages 89--100, 2010.
+
+\bibitem{ARM}
+B.~Jeff.
+\newblock {big.LITTLE Technology Moves Towards Fully Heterogeneous Global Task
+  Scheduling}.
+\newblock {\em ARM White Paper}, 2013.
+
+\bibitem{Swarm}
+M.~C. Jeffrey, S.~Subramanian, C.~Yan, J.~Emer, and D.~Sanchez.
+\newblock A scalable architecture for ordered parallelism.
+\newblock In {\em MICRO}, pages 228--241, 2015.
+
+\bibitem{Carbon}
+S.~Kumar, C.~J. Hughes, and A.~Nguyen.
+\newblock Carbon: Architectural support for fine-grained parallelism on chip
+  multiprocessors.
+\newblock In {\em ISCA}, pages 162--173, 2007.
+
+\bibitem{Manivannan2014}
+M.~Manivannan and P.~Stenstr{\"o}m.
+\newblock Runtime-guided cache coherence optimizations in multi-core
+  architectures.
+\newblock In {\em IPDPS}, 2014.
+
+\bibitem{OpenMP4.0:Manual2013}
+{OpenMP} architecture review board: Application program interface, 2013.
+
+\bibitem{Papaefstathiou2013}
+V.~Papaefstathiou, M.~G. Katevenis, D.~S. Nikolopoulos, and D.~Pnevmatikatos.
+\newblock Prefetching and cache management using task lifetimes.
+\newblock In {\em Proceedings of the 27th International ACM Conference on
+  International Conference on Supercomputing}, ICS '13, pages 325--334, New
+  York, NY, USA, 2013. ACM.
+
+\bibitem{Reinders2007}
+J.~Reinders.
+\newblock {\em Intel threading building blocks - outfitting {C++} for
+  multi-core processor parallelism}.
+\newblock O'Reilly, 2007.
+
+\bibitem{AbstrLevels_TACO12}
+A.~Rico, F.~Cabarcas, C.~Villavieja, M.~Pavlovic, A.~Vega, Y.~Etsion,
+  A.~Ramirez, and M.~Valero.
+\newblock {On the Simulation of Large-Scale Architectures Using Multiple
+  Application Abstraction Levels}.
+\newblock {\em ACM Trans. Archit. Code Optim.}, 8(4), 2012.
+
+\bibitem{Sanchez:2010}
+D.~Sanchez, R.~M. Yoo, and C.~Kozyrakis.
+\newblock Flexible architectural support for fine-grain scheduling.
+\newblock In {\em Proceedings of the Fifteenth Edition of ASPLOS on
+  Architectural Support for Programming Languages and Operating Systems},
+  ASPLOS XV, pages 311--322, 2010.
+
+\bibitem{TMU}
+M.~Själander, A.~Terechko, and M.~Duranton.
+\newblock A look-ahead task management unit for embedded multi-core
+  architectures.
+\newblock In {\em 2008 11th EUROMICRO Conference on Digital System Design
+  Architectures, Methods and Tools}, pages 149--157, 2008.
+
+\bibitem{Xubin}
+X.~Tan, J.~Bosch, M.~Vidal, C.~Álvarez, D.~Jiménez-González, E.~Ayguadé,
+  and M.~Valero.
+\newblock General purpose task-dependence management hardware for task-based
+  dataflow programming models.
+\newblock In {\em IPDPS}, pages 244--253, 2017.
+
+\bibitem{Vandierendonck:PACT2011}
+H.~Vandierendonck, G.~Tzenakis, and D.~S. Nikolopoulos.
+\newblock A unified scheduler for recursive and task dataflow parallelism.
+\newblock In {\em PACT}, pages 1--11, 2011.
+
+\end{thebibliography}

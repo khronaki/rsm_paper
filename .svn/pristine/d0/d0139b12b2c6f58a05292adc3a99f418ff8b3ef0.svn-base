@@ -1,0 +1,3 @@
+Task creation is the main bottleneck on parallel applications.
+In this paper we present how a specialized HW can overcome this issue by executing explicitly task creation.
+This design gives us high performance improvements for systems of up to 512 cores.
